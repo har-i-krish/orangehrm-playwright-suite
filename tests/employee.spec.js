@@ -2,6 +2,7 @@ const { test, expect } = require('@playwright/test');
 
 const { LoginPage } = require('../pages/LoginPage');
 const { PimPage } = require('../pages/PimPage');
+const employees = require('../test-data/employees.json');
 
 test.describe('Employee Module', () => {
 
@@ -26,15 +27,30 @@ test.describe('Employee Module', () => {
 
     });
 
-    test('Search Employee', async ({ page }) => {
+    test('Add Multiple Employees using JSON', async ({ page }) => {
 
-        await pimPage.openPIM();
+        for (const employee of employees) {
 
-        await pimPage.searchEmployee('Linda');
+            await pimPage.openPIM();
 
-        expect(
-            await pimPage.getResultCount()
-        ).toBeGreaterThan(0);
+            await pimPage.openAddEmployee();
+
+            const employeeId = await pimPage.addEmployee(
+                employee.firstName,
+                employee.lastName
+            );
+
+            // Verify employee was created successfully
+            await expect(pimPage.successToast).toBeVisible();
+
+            // Verify we reached Personal Details page
+            await expect(page).toHaveURL(/viewPersonalDetails/);
+
+            console.log(
+                `Employee Created -> ${employee.firstName} ${employee.lastName} | ID: ${employeeId}`
+            );
+
+        }
 
     });
 

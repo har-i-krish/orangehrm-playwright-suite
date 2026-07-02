@@ -33,23 +33,19 @@ test.describe('Login Tests', () => {
 
     });
 
-    test('Empty Username', async ({ page }) => {
+    test('Empty Username', async () => {
 
         await loginPage.login('', 'admin123');
 
-        await expect(
-            page.locator('.oxd-input-group__message').first()
-        ).toBeVisible();
+        await expect(loginPage.requiredFieldMessage).toBeVisible();
 
     });
 
-    test('Empty Password', async ({ page }) => {
+    test('Empty Password', async () => {
 
         await loginPage.login('Admin', '');
 
-        await expect(
-            page.locator('.oxd-input-group__message').first()
-        ).toBeVisible();
+        await expect(loginPage.requiredFieldMessage).toBeVisible();
 
     });
 

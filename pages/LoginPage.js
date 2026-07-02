@@ -11,6 +11,9 @@ class LoginPage {
         this.loginButton = page.locator('button[type="submit"]');
 
         this.errorMessage = page.locator('.oxd-alert-content-text');
+
+        // Shown under a field (e.g. username/password) when left empty
+        this.requiredFieldMessage = page.locator('.oxd-input-group__message').first();
     }
 
     async goto() {
